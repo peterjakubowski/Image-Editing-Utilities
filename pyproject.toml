@@ -1,0 +1,15 @@
+[project]
+name = "Image-Editing-Utilities"
+version = "0.0.1"
+authors = [
+  {name="Peter Jakubowski"},
+]
+description = "Python helper functions for image editing tasks."
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+HomePage = "https://github.com/peterjakubowski/Image-Editing-Utilities"
+Issues = "https://github.com/peterjakubowski/Image-Editing-Utilities/issues"
