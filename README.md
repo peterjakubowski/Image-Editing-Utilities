@@ -10,7 +10,7 @@ Function for rescaling the width and height of an image to keep aspect ratio.
 
 ```commandline
 from PIL import Image
-from image_utils import rescale_width_height
+from image_utils.image_utils import rescale_width_height
 
 # Open an image with PIL
 img = Image.open(img_path)
@@ -30,7 +30,7 @@ resized_img = img.resize(scaled_wh, Image.Resampling.BICUBIC)
 
 ```commandline
 import cv2
-from image_utils import rescale_width_height
+from image_utils.image_utils import rescale_width_height
 
 # Open an image with OpenCV
 img = cv2.imread(img_path)
