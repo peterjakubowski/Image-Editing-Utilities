@@ -19,6 +19,15 @@ def rescale_width_height(width: int, height: int, size: int) -> tuple[int, ...]:
     :return: width (w) and height (h) of resized image.
     """
 
+    # check that the input values can be used
+    for input_title, input_value in [("Width", width), ("Height", height), ("Size", size)]:
+        if not isinstance(input_value, int):
+            raise ValueError(f"{input_title} cannot be {str(type(input_value).__name__)}")
+        elif input_value < 0:
+            raise ValueError(f"{input_title} cannot be negative")
+        elif input_value == 0:
+            raise ValueError(f"{input_title} cannot be 0")
+
     # check if the image is vertical,
     # height is the longest edge
     if height > width:
