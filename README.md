@@ -1,3 +1,5 @@
+![Run Python Tests](https://github.com/peterjakubowski/Image-Editing-Utilities/actions/workflows/ci.yaml/badge.svg)
+
 # Image-Editing-Utilities
 
 Python helper functions for image editing tasks.
@@ -8,7 +10,7 @@ Function for rescaling the width and height of an image to keep aspect ratio.
 
 ### Pillow Image Usage
 
-```commandline
+```python
 from PIL import Image
 from image_utils.image_utils import rescale_width_height
 
@@ -28,7 +30,7 @@ resized_img = img.resize(scaled_wh, Image.Resampling.BICUBIC)
 
 ### OpenCV Usage
 
-```commandline
+```python
 import cv2
 from image_utils.image_utils import rescale_width_height
 
