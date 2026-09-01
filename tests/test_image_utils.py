@@ -1,5 +1,6 @@
-from src.image_utils.image_utils import rescale_width_height
 import pytest
+
+from src.image_utils.image_utils import rescale_width_height
 
 
 class TestRescaleWidthHeight:
@@ -77,7 +78,7 @@ class TestRescaleWidthHeight:
 
         assert results == (100, 100)
 
-    def test_rescale_width_height_raises_value_error_when_width_is_string(self):
+    def test_rescale_width_height_raises_type_error_when_width_is_string(self):
 
         test_data = {
             'width': '300',
@@ -85,10 +86,10 @@ class TestRescaleWidthHeight:
             'size': 100
         }
 
-        with pytest.raises(ValueError, match="Width cannot be str"):
+        with pytest.raises(TypeError, match="Width cannot be str"):
             rescale_width_height(**test_data)
 
-    def test_rescale_width_height_raises_value_error_when_height_is_string(self):
+    def test_rescale_width_height_raises_type_error_when_height_is_string(self):
 
         test_data = {
             'width': 300,
@@ -96,10 +97,10 @@ class TestRescaleWidthHeight:
             'size': 100
         }
 
-        with pytest.raises(ValueError, match="Height cannot be str"):
+        with pytest.raises(TypeError, match="Height cannot be str"):
             rescale_width_height(**test_data)
 
-    def test_rescale_width_height_raises_value_error_when_size_is_string(self):
+    def test_rescale_width_height_raises_type_error_when_size_is_string(self):
 
         test_data = {
             'width': 300,
@@ -107,10 +108,10 @@ class TestRescaleWidthHeight:
             'size': '100'
         }
 
-        with pytest.raises(ValueError, match="Size cannot be str"):
+        with pytest.raises(TypeError, match="Size cannot be str"):
             rescale_width_height(**test_data)
 
-    def test_rescale_width_height_raises_value_error_when_width_is_float(self):
+    def test_rescale_width_height_raises_type_error_when_width_is_float(self):
 
         test_data = {
             'width': 300.0,
@@ -118,10 +119,10 @@ class TestRescaleWidthHeight:
             'size': 100
         }
 
-        with pytest.raises(ValueError, match="Width cannot be float"):
+        with pytest.raises(TypeError, match="Width cannot be float"):
             rescale_width_height(**test_data)
 
-    def test_rescale_width_height_raises_value_error_when_height_is_float(self):
+    def test_rescale_width_height_raises_type_error_when_height_is_float(self):
 
         test_data = {
             'width': 300,
@@ -129,10 +130,10 @@ class TestRescaleWidthHeight:
             'size': 100
         }
 
-        with pytest.raises(ValueError, match="Height cannot be float"):
+        with pytest.raises(TypeError, match="Height cannot be float"):
             rescale_width_height(**test_data)
 
-    def test_rescale_width_height_raises_value_error_when_size_is_float(self):
+    def test_rescale_width_height_raises_type_error_when_size_is_float(self):
 
         test_data = {
             'width': 300,
@@ -140,7 +141,7 @@ class TestRescaleWidthHeight:
             'size': 100.0
         }
 
-        with pytest.raises(ValueError, match="Size cannot be float"):
+        with pytest.raises(TypeError, match="Size cannot be float"):
             rescale_width_height(**test_data)
 
     def test_rescale_width_height_raises_value_error_when_width_is_negative(self):
