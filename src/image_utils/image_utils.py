@@ -22,7 +22,7 @@ def rescale_width_height(width: int, height: int, size: int) -> tuple[int, ...]:
     # check that the input values can be used
     for input_title, input_value in [("Width", width), ("Height", height), ("Size", size)]:
         if not isinstance(input_value, int):
-            raise ValueError(f"{input_title} cannot be {str(type(input_value).__name__)}")
+            raise TypeError(f"{input_title} cannot be {type(input_value).__name__!s}")
         elif input_value < 0:
             raise ValueError(f"{input_title} cannot be negative")
         elif input_value == 0:
@@ -52,4 +52,4 @@ def rescale_width_height(width: int, height: int, size: int) -> tuple[int, ...]:
         # set width and height to size
         w = h = size
     # return the new width and height
-    return tuple([w, h])
+    return w, h
