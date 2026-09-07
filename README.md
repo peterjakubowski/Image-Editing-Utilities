@@ -4,6 +4,59 @@
 
 Python helper functions for image editing tasks.
 
+## list_image_paths
+
+Function to list image paths in a folder filtered by allowed file extensions.
+
+### Basic Usage
+
+By default, `list_image_paths` finds all supported image formats (`jpg`, `jpeg`, `tif`, `tiff`, `png`, `nef`, `cr2`, `dng`).
+
+
+```python
+from pathlib import Path
+from image_utils import list_image_paths
+
+# Specify directory
+image_directory = Path("path/to/folder/of/images")
+
+# List all supported image paths
+image_paths = list_image_paths(image_directory)
+
+print(f"Found {len(image_paths)} images.")
+
+# Iterate and process each image
+for img_path in image_paths:
+    print(img_path.name)
+
+```
+### Filtering by File Extension
+
+You can restrict the search to a single file type or a tuple of specific extensions using the `allowed_extensions` parameter.
+
+
+#### Single Type
+
+```python
+jpg_images = list_image_paths(image_directory, allowed_extensions="jpg")
+
+```
+
+#### Multiple Types
+
+```python
+raw_images = list_image_paths(image_directory, allowed_extensions=("cr2", "dng", "nef"))
+
+```
+
+#### Notes
+
+* **Path Input:** Accepts both `pathlib.Path` objects and strings.
+
+* **Default Supported Extensions:** jpg, jpeg, tif, tiff, png, nef, cr2, and dng.
+
+* **Non-recursive:** Only files in the immediate directory are scanned (subdirectories are ignored).
+
 ## rescale_width_height
 
 Function for rescaling the width and height of an image to keep aspect ratio.
