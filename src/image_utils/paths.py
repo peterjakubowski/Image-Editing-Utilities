@@ -5,7 +5,6 @@
 # Description: Python helper functions for image editing
 #
 
-import os
 from pathlib import Path
 from typing import Literal, get_args
 
@@ -20,30 +19,41 @@ ALL_ALLOWED_EXTENSIONS: tuple[AllowedExtensions, ...] = get_args(AllowedExtensio
 
 
 def list_image_paths(
-        folder_path: Path,
+        folder_path: str | Path,
         allowed_extensions: AllowedExtensions | tuple[AllowedExtensions, ...] = ALL_ALLOWED_EXTENSIONS) -> list[Path]:
-    """Given a folder path, return a list of paths for all images in the folder.
+    """Return paths to all image files in a directory that match allowed extensions.
 
-    :param folder_path: Pathname for the folder of images
-    :param allowed_extensions: Allowed image types / file extensions
+    :param folder_path: Path to the directory containing images.
+    :param allowed_extensions: Allowed file extension or tuple of extensions
+                               (without leading dot).
+    :return: List of Path objects for matching image files.
+    :raises TypeError: If folder_path is not a pathlib.Path object.
+    :raises ValueError: If folder_path does not exist or is not a directory.
     """
 
-    if not isinstance(folder_path, Path):
-        raise TypeError("Folder path must be a pathlib.Path object.")
+    if not isinstance(folder_path, Path | str):
+        raise TypeError("Folder path must be a pathlib.Path object or string.")
 
-    elif not folder_path.exists():
+    path = Path(folder_path)
+
+    if not path.exists():
         raise ValueError("Path must be to a folder that already exists.")
 
-    elif not folder_path.is_dir():
+    if not path.is_dir():
         raise ValueError("Path must be to a folder.")
+
+    if isinstance(allowed_extensions, str):
+        valid_extensions = {allowed_extensions.strip(".").lower()}
+    else:
+        valid_extensions = {ext.strip(".").lower() for ext in allowed_extensions}
 
     res = []
 
-    for file_name in os.listdir(folder_path):
+    for file_name in path.iterdir():
         file_path = folder_path / file_name
         if file_path.is_file():
-            file_extension = file_name.split(".")[-1].lower()
-            if file_extension in allowed_extensions:
+            file_extension = file_path.suffix.strip(".").lower()
+            if file_extension in valid_extensions:
                 res.append(file_path)
 
     return res
