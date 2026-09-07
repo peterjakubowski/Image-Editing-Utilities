@@ -27,7 +27,7 @@ def list_image_paths(
     :param allowed_extensions: Allowed file extension or tuple of extensions
                                (without leading dot).
     :return: List of Path objects for matching image files.
-    :raises TypeError: If folder_path is not a pathlib.Path object.
+    :raises TypeError: If folder_path is not a pathlib.Path object or string.
     :raises ValueError: If folder_path does not exist or is not a directory.
     """
 
@@ -49,8 +49,7 @@ def list_image_paths(
 
     res = []
 
-    for file_name in path.iterdir():
-        file_path = folder_path / file_name
+    for file_path in path.iterdir():
         if file_path.is_file():
             file_extension = file_path.suffix.strip(".").lower()
             if file_extension in valid_extensions:
