@@ -13,14 +13,22 @@ class TestListImagePaths:
         result = list_image_paths(tmp_path)
         assert result == []
 
-    @pytest.mark.parametrize("input_value", ["/file/path", 123, True])
-    def test_list_image_paths_raises_type_error_when_input_is_not_path(self, input_value):
-        with pytest.raises(TypeError, match="Folder path must be a pathlib.Path object."):
+    def test_list_image_paths_returns_empty_list_when_folder_path_is_string(self, tmp_path):
+        assert isinstance(tmp_path, Path)
+        path_str = str(tmp_path)
+        assert isinstance(path_str, str)
+        result = list_image_paths(path_str)
+        assert result == []
+
+    @pytest.mark.parametrize("input_value", [123, True, [], (), 1.0, None])
+    def test_list_image_paths_raises_type_error_when_input_is_not_path_or_string(self, input_value):
+        with pytest.raises(TypeError, match="Folder path must be a pathlib.Path object or string."):
             list_image_paths(input_value)
 
-    def test_list_image_paths_raises_value_error_when_directory_path_does_not_exist(self, tmp_path):
+    @pytest.mark.parametrize("input_value", ["test", ".test", "/test"])
+    def test_list_image_paths_raises_value_error_when_directory_path_does_not_exist(self, tmp_path, input_value):
         with pytest.raises(ValueError, match="Path must be to a folder that already exists."):
-            list_image_paths(tmp_path / "test")
+            list_image_paths(tmp_path / input_value)
 
     def test_list_image_paths_raises_value_error_when_path_is_not_directory(self, tmp_path):
         temp_file_path = tmp_path / "temp_file.txt"
@@ -107,30 +115,41 @@ class TestListImagePaths:
         result = list_image_paths(tmp_path)
         assert len(result) == 0
 
-    def test_list_image_paths_returns_jpg_only(self, tmp_path):
+    @pytest.mark.parametrize("file_extension", ["j", "p", "g"])
+    def test_list_image_path_ignores_single_character_files(self, tmp_path, file_extension):
+        test_image_path = tmp_path / f"test_image.{file_extension}"
+        test_image = Image.new(mode="RGB", size=(10, 10), color=0)
+        test_image.save(test_image_path, format="tiff")
+        result = list_image_paths(tmp_path)
+        assert len(result) == 0
+
+    @pytest.mark.parametrize("allowed_extension", ["jpg", "JPG", ".jpg", ".JPG"])
+    def test_list_image_paths_returns_jpg_only(self, tmp_path, allowed_extension):
         for file_type in ["jpg", "png", "tiff"]:
             temp_image_path = tmp_path / f"temp_image.{file_type}"
             temp_image = Image.new(mode="RGB", size=(10, 10), color=0)
             temp_image.save(temp_image_path)
-        result = list_image_paths(tmp_path, allowed_extensions="jpg")
+        result = list_image_paths(tmp_path, allowed_extensions=allowed_extension)
         assert len(result) == 1
         assert str(result[0]).endswith("jpg")
 
-    def test_list_image_paths_returns_png_only(self, tmp_path):
+    @pytest.mark.parametrize("allowed_extension", ["png", "PNG", ".png", ".PNG"])
+    def test_list_image_paths_returns_png_only(self, tmp_path, allowed_extension):
         for file_type in ["jpg", "png", "tiff"]:
             temp_image_path = tmp_path / f"temp_image.{file_type}"
             temp_image = Image.new(mode="RGB", size=(10, 10), color=0)
             temp_image.save(temp_image_path)
-        result = list_image_paths(tmp_path, allowed_extensions="png")
+        result = list_image_paths(tmp_path, allowed_extensions=allowed_extension)
         assert len(result) == 1
         assert str(result[0]).endswith("png")
 
-    def test_list_image_paths_returns_tiff_only(self, tmp_path):
+    @pytest.mark.parametrize("allowed_extension", ["tiff", "TIFF", ".tiff", ".TIFF"])
+    def test_list_image_paths_returns_tiff_only(self, tmp_path, allowed_extension):
         for file_type in ["jpg", "png", "tiff"]:
             temp_image_path = tmp_path / f"temp_image.{file_type}"
             temp_image = Image.new(mode="RGB", size=(10, 10), color=0)
             temp_image.save(temp_image_path)
-        result = list_image_paths(tmp_path, allowed_extensions="tiff")
+        result = list_image_paths(tmp_path, allowed_extensions=allowed_extension)
         assert len(result) == 1
         assert str(result[0]).endswith("tiff")
 
@@ -139,5 +158,6 @@ class TestListImagePaths:
             temp_image_path = tmp_path / f"temp_image.{file_type}"
             temp_image = Image.new(mode="RGB", size=(10, 10), color=0)
             temp_image.save(temp_image_path, format="tiff")
-        result = list_image_paths(tmp_path, allowed_extensions=cast(tuple[AllowedExtensions, ...], ("nef", "cr2", "dng")))
+        allowed_extensions = cast(tuple[AllowedExtensions, ...], ("nef", "cr2", "dng"))
+        result = list_image_paths(tmp_path, allowed_extensions=allowed_extensions)
         assert len(result) == 3
