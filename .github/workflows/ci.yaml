@@ -45,7 +45,7 @@ jobs:
         run: |
           mypy src/
   test:
-    name: Unit Tests Python ${{ matrix.python-version }}
+    name: Unit Tests Python ${{ matrix.python-version }} on $${{ matrix.os }}
     needs: ruff
     strategy:
       matrix:
