@@ -63,7 +63,7 @@ raw_images = list_image_paths(image_directory, allowed_extensions=("cr2", "dng",
 
 ## rescale_width_height
 
-Function for rescaling the width and height of an image to keep aspect ratio.
+Given the pixel dimension of the longest edge, returns the rescaled width and height of an image to keep aspect ratio.
 
 ### Pillow Image Usage
 
