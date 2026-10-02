@@ -10,7 +10,7 @@ Python helper functions for image editing tasks.
 
 ## list_image_paths
 
-Function to list image paths in a folder filtered by allowed file extensions.
+Returns a list of image paths in a folder filtered by allowed file extensions.
 
 ### Basic Usage
 
